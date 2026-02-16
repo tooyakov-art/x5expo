@@ -17,6 +17,9 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.x5marketing.mobile",
       "usesAppleSignIn": true,
+      "config": {
+        "usesNonExemptEncryption": false
+      },
       "infoPlist": {
         "NSCameraUsageDescription": "X5 Marketing needs camera access for photo features",
         "NSPhotoLibraryUsageDescription": "X5 Marketing needs photo library access to upload images",
