@@ -1,7 +1,8 @@
 {
   "cli": {
     "version": ">= 15.0.0",
-    "appVersionSource": "remote"
+    "appVersionSource": "remote",
+    "promptToConfigurePushNotifications": false
   },
   "build": {
     "development": {
@@ -25,8 +26,8 @@
     "production": {
       "ios": {
         "appleId": "tooyakov.art@gmail.com",
-        "ascAppId": "YOUR_APP_STORE_CONNECT_APP_ID",
-        "appleTeamId": "YOUR_APPLE_TEAM_ID"
+        "ascAppId": "6757862233",
+        "appleTeamId": "F8LA8PC4U6"
       },
       "android": {
         "serviceAccountKeyPath": "./google-services.json",
