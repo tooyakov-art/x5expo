@@ -1,18 +1,43 @@
 {
   "name": "x5-marketing-expo",
-  "version": "1.0.0",
-  "main": "index.ts",
+  "version": "2.0.0",
+  "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "dev:expo:go": "expo start --go --lan --clear --port 8083",
+    "dev:expo:go:tunnel": "expo start --go --tunnel --clear --port 8083",
+    "dev:web:local": "npm --prefix ../x5-marketing111/web run dev -- --host 0.0.0.0 --port 5176 --strictPort",
+    "build:web": "npm --prefix ../x5-marketing111/web run build && node scripts/sync-web-assets.mjs",
+    "build:ios:testflight": "eas build --platform ios --profile production",
+    "submit:ios:testflight": "eas submit --platform ios --profile production"
   },
   "dependencies": {
+    "@expo/vector-icons": "^15.0.3",
+    "@react-native-async-storage/async-storage": "^2.2.0",
+    "@supabase/supabase-js": "^2.95.3",
     "expo": "~54.0.33",
+    "expo-apple-authentication": "~8.0.8",
+    "expo-auth-session": "~7.0.10",
+    "expo-constants": "~18.0.13",
+    "expo-crypto": "~15.0.8",
+    "expo-dev-client": "~6.0.20",
+    "expo-device": "~8.0.10",
+    "expo-font": "~14.0.11",
+    "expo-linking": "~8.0.11",
+    "expo-notifications": "~0.32.16",
+    "expo-router": "~6.0.23",
+    "expo-splash-screen": "~31.0.13",
     "expo-status-bar": "~3.0.9",
+    "expo-web-browser": "~15.0.10",
     "react": "19.1.0",
-    "react-native": "0.81.5"
+    "react-native": "0.81.5",
+    "react-native-purchases": "^9.7.6",
+    "react-native-safe-area-context": "~5.6.0",
+    "react-native-screens": "~4.16.0",
+    "react-native-web": "^0.21.0",
+    "react-native-webview": "13.15.0"
   },
   "devDependencies": {
     "@types/react": "~19.1.0",
