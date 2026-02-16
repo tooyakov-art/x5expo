@@ -31,7 +31,20 @@ yarn-error.*
 *.pem
 
 # local env files
+.env
+.env.local
 .env*.local
+.env.production
+
+# EAS credentials
+eas-credentials.json
+google-services.json
+GoogleService-Info.plist
+
+# Build output
+dist-test/
+dist-verify/
+nul
 
 # typescript
 *.tsbuildinfo
