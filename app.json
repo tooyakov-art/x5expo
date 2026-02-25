@@ -24,6 +24,9 @@
         "NSCameraUsageDescription": "X5 Marketing needs camera access for photo features",
         "NSPhotoLibraryUsageDescription": "X5 Marketing needs photo library access to upload images",
         "NSMicrophoneUsageDescription": "X5 Marketing needs microphone access for audio recording"
+      },
+      "runtimeVersion": {
+        "policy": "appVersion"
       }
     },
     "android": {
@@ -62,6 +65,9 @@
         "projectId": "b18e607a-c085-413f-aad9-da2da59d2381"
       }
     },
-    "owner": "ke1nmann21"
+    "owner": "ke1nmann21",
+    "updates": {
+      "url": "https://u.expo.dev/b18e607a-c085-413f-aad9-da2da59d2381"
+    }
   }
 }

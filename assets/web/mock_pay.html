@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оплата заказа | Freedom Pay (Test)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background: #f3f4f6; }
+        .card-input { background: #f9fafb; border: 1px solid #e5e7eb; transition: all 0.2s; }
+        .card-input:focus { border-color: #10b981; outline: none; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1); }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <div class="bg-white w-full max-w-md rounded-2xl shadow-xl overflow-hidden">
+        <div class="bg-gray-900 p-6 text-white flex justify-between items-center">
+            <div>
+                <p class="text-xs text-gray-400 uppercase tracking-widest font-bold">Сумма к оплате</p>
+                <h1 class="text-3xl font-bold mt-1">1 000 ₸</h1>
+            </div>
+            <div class="h-10 w-10 bg-white/10 rounded-full flex items-center justify-center font-bold text-green-400">FP</div>
+        </div>
+
+        <div class="p-6 space-y-6">
+            <div class="flex gap-2">
+                <div class="h-8 w-12 bg-gray-100 rounded border border-gray-200 flex items-center justify-center"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" class="h-3 opacity-50"></div>
+                <div class="h-8 w-12 bg-gray-100 rounded border border-gray-200 flex items-center justify-center"><img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" class="h-4 opacity-50"></div>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Номер карты</label>
+                    <input type="text" class="w-full p-3 rounded-lg card-input font-mono text-gray-700 placeholder-gray-300" placeholder="0000 0000 0000 0000" value="4400 4301 9494 4949">
+                </div>
+                <div class="flex gap-4">
+                    <div class="flex-1">
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Срок</label>
+                        <input type="text" class="w-full p-3 rounded-lg card-input font-mono text-gray-700" value="12/28">
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">CVV</label>
+                        <input type="password" class="w-full p-3 rounded-lg card-input font-mono text-gray-700" value="***">
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="paySuccess()" class="w-full py-4 bg-green-500 hover:bg-green-600 text-white font-bold rounded-xl shadow-lg shadow-green-500/30 transition-all active:scale-95 text-lg">
+                Оплатить 1 000 ₸
+            </button>
+            
+            <button onclick="payFail()" class="w-full py-3 text-red-400 font-bold text-sm hover:text-red-600 transition-colors">
+                Отменить / Ошибка
+            </button>
+        </div>
+        
+        <div class="bg-gray-50 p-4 text-center">
+            <p class="text-[10px] text-gray-400 flex items-center justify-center gap-1">
+                <span class="w-2 h-2 bg-green-500 rounded-full"></span> Защищено Freedom Pay (Эмуляция)
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function paySuccess() {
+            const btn = document.querySelector('button');
+            btn.innerHTML = 'Обработка...';
+            btn.classList.add('opacity-75', 'cursor-not-allowed');
+            
+            // Имитация задержки банка 1.5 сек
+            setTimeout(() => {
+                // Возвращаемся на сайт с меткой успеха
+                window.location.href = "/?status=success";
+            }, 1500);
+        }
+
+        function payFail() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>

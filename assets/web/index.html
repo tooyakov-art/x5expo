@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover" />
+  <title>X5 Marketing</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/favicon.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- GOOGLE FONTS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;700;900&family=Merriweather:ital,wght@0,400;0,900;1,400&family=Montserrat:wght@400;700;900&family=Oswald:wght@400;700&family=Playfair+Display:ital,wght@0,700;1,700&family=Roboto+Mono:wght@500&family=Unbounded:wght@400;900&family=Caveat:wght@700&family=Russo+One&family=Comforter+Brush&family=Press+Start+2P&family=Pacifico&display=swap"
+    rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"SF Pro Text"', '"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
+            montserrat: ['"Montserrat"', 'sans-serif'],
+            bebas: ['"Bebas Neue"', 'sans-serif'],
+            playfair: ['"Playfair Display"', 'serif'],
+            oswald: ['"Oswald"', 'sans-serif'],
+            merriweather: ['"Merriweather"', 'serif'],
+            mono: ['"Roboto Mono"', 'monospace'],
+          },
+          animation: {
+            'blob': 'blob 10s infinite',
+            'video-fade-up': 'videoFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+            'video-scale-in': 'videoScaleIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
+            'video-slide-right': 'videoSlideRight 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+            'video-blur-in': 'videoBlurIn 1s ease-out forwards',
+            'video-typewriter': 'videoTypewriter 2s steps(40, end) forwards',
+            'video-bounce-in': 'videoBounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards',
+            'video-glitch': 'videoGlitch 0.6s ease-out forwards',
+            'video-blur-reveal': 'videoBlurReveal 1.2s ease-out forwards',
+            'video-rotate-in': 'videoRotateIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards',
+            'video-shake': 'videoShake 0.6s ease-out forwards',
+            'video-wave': 'videoWave 1s ease-out forwards',
+          },
+          keyframes: {
+            blob: {
+              '0%': { transform: 'translate(0px, 0px) scale(1)' },
+              '33%': { transform: 'translate(20px, -30px) scale(1.05)' },
+              '66%': { transform: 'translate(-10px, 10px) scale(0.95)' },
+              '100%': { transform: 'translate(0px, 0px) scale(1)' },
+            },
+            videoFadeUp: {
+              '0%': { opacity: 0, transform: 'translateY(40px)' },
+              '100%': { opacity: 1, transform: 'translateY(0)' }
+            },
+            videoScaleIn: {
+              '0%': { opacity: 0, transform: 'scale(0.5)' },
+              '100%': { opacity: 1, transform: 'scale(1)' }
+            },
+            videoSlideRight: {
+              '0%': { opacity: 0, transform: 'translateX(-50px)' },
+              '100%': { opacity: 1, transform: 'translateX(0)' }
+            },
+            videoBlurIn: {
+              '0%': { opacity: 0, filter: 'blur(20px)' },
+              '100%': { opacity: 1, filter: 'blur(0)' }
+            },
+            videoBounceIn: {
+              '0%': { opacity: 0, transform: 'scale(0) translateY(50px)' },
+              '50%': { transform: 'scale(1.2) translateY(-10px)' },
+              '100%': { opacity: 1, transform: 'scale(1) translateY(0)' }
+            },
+            videoGlitch: {
+              '0%': { opacity: 0, transform: 'translateX(0)', filter: 'hue-rotate(0deg)' },
+              '20%': { transform: 'translateX(-5px)', filter: 'hue-rotate(90deg)' },
+              '40%': { transform: 'translateX(5px)', filter: 'hue-rotate(180deg)' },
+              '60%': { transform: 'translateX(-3px)', filter: 'hue-rotate(270deg)' },
+              '80%': { transform: 'translateX(2px)', filter: 'hue-rotate(360deg)' },
+              '100%': { opacity: 1, transform: 'translateX(0)', filter: 'hue-rotate(0deg)' }
+            },
+            videoBlurReveal: {
+              '0%': { opacity: 0, filter: 'blur(30px)', transform: 'scale(1.1)' },
+              '100%': { opacity: 1, filter: 'blur(0)', transform: 'scale(1)' }
+            },
+            videoRotateIn: {
+              '0%': { opacity: 0, transform: 'rotate(-360deg) scale(0.5)' },
+              '100%': { opacity: 1, transform: 'rotate(0deg) scale(1)' }
+            },
+            videoShake: {
+              '0%': { opacity: 0, transform: 'translateX(0)' },
+              '10%': { transform: 'translateX(-10px) rotate(1deg)' },
+              '20%': { transform: 'translateX(10px) rotate(-1deg)' },
+              '30%': { transform: 'translateX(-10px) rotate(1deg)' },
+              '40%': { transform: 'translateX(10px) rotate(-1deg)' },
+              '50%': { transform: 'translateX(-5px) rotate(0.5deg)' },
+              '60%': { transform: 'translateX(5px) rotate(-0.5deg)' },
+              '70%': { transform: 'translateX(-2px) rotate(0.25deg)' },
+              '80%': { transform: 'translateX(2px) rotate(-0.25deg)' },
+              '90%': { transform: 'translateX(0) rotate(0deg)' },
+              '100%': { opacity: 1, transform: 'translateX(0)' }
+            },
+            videoWave: {
+              '0%': { opacity: 0, transform: 'translateY(50px) rotateX(90deg)' },
+              '50%': { opacity: 0.5, transform: 'translateY(-10px) rotateX(45deg)' },
+              '100%': { opacity: 1, transform: 'translateY(0) rotateX(0deg)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    :root {
+      --bg-color: #eef2f6;
+      --text-color: #0f172a;
+    }
+
+    html {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      overscroll-behavior: none;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      overscroll-behavior: none;
+      touch-action: pan-y;
+      -webkit-tap-highlight-color: transparent;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Disable rubber banding */
+    .overflow-y-auto,
+    .overflow-auto,
+    .overflow-x-auto {
+      overscroll-behavior: none;
+    }
+
+    /* Hide Scrollbar */
+    * {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    *::-webkit-scrollbar {
+      width: 0px;
+      background: transparent;
+    }
+
+    /* === IOS LIQUID BACKGROUND (OPTIMIZED FOR PERFORMANCE) === */
+    .liquid-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: #f0f2f5;
+      overflow: hidden;
+      contain: strict;
+      transition: background 0.5s ease;
+      /* Force hardware acceleration */
+      transform: translateZ(0);
+    }
+
+    .liquid-blob {
+      position: absolute;
+      /* PERFORMANCE: drastically reduced blur radius to prevent GPU lag */
+      filter: blur(25px);
+      opacity: 0.3;
+      /* Lower opacity for less compositing work */
+      animation: float 15s infinite ease-in-out;
+      border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+      will-change: transform;
+      transform: translateZ(0);
+    }
+
+    /* Default Cool Theme */
+    .blob-1 {
+      top: -10%;
+      left: -10%;
+      width: 50vw;
+      height: 50vw;
+      background: #60a5fa;
+      animation-delay: 0s;
+    }
+
+    .blob-2 {
+      bottom: -10%;
+      right: -10%;
+      width: 60vw;
+      height: 60vw;
+      background: #c084fc;
+      animation-delay: -3s;
+    }
+
+    .blob-3 {
+      top: 40%;
+      left: 40%;
+      width: 40vw;
+      height: 40vw;
+      background: #f472b6;
+      animation-delay: -5s;
+      opacity: 0.3;
+    }
+
+    /* === ORANGE THEME === */
+    .liquid-bg.orange-theme {
+      background: #fff8f5;
+    }
+
+    .blob-orange-1 {
+      top: -15%;
+      left: -20%;
+      width: 70vw;
+      height: 70vw;
+      background: #ffab91;
+      animation-delay: 0s;
+    }
+
+    .blob-orange-2 {
+      bottom: -20%;
+      right: -20%;
+      width: 80vw;
+      height: 80vw;
+      background: #ffcc80;
+      animation-delay: -3s;
+    }
+
+    .blob-orange-3 {
+      top: 30%;
+      left: 30%;
+      width: 50vw;
+      height: 50vw;
+      background: #ffe0b2;
+      animation-delay: -5s;
+      opacity: 0.5;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translate3d(0, 0, 0) rotate(0deg);
+      }
+
+      50% {
+        transform: translate3d(15px, -15px, 0) rotate(5deg);
+      }
+    }
+
+    /* === GLASS CARD === */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+      color: #0f172a;
+      transform: translateZ(0);
+      will-change: transform, opacity;
+    }
+
+    .glass-card:active {
+      transform: scale(0.98) translateZ(0);
+      background: rgba(255, 255, 255, 1);
+    }
+
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.05);
+      transform: translateZ(0);
+      will-change: transform;
+    }
+
+    .glass-input {
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      color: #0f172a;
+      transition: all 0.3s ease;
+    }
+
+    .glass-input:focus {
+      background: rgba(255, 255, 255, 1);
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      outline: none;
+    }
+
+    /* Animations */
+    .animate-fade-in {
+      animation: fadeIn 0.3s ease-out forwards;
+      opacity: 0;
+    }
+
+    .animate-slide-up {
+      animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      opacity: 0;
+      transform: translateY(15px);
+    }
+
+    /* New Slide Transitions */
+    .animate-slide-enter-right {
+      animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .animate-slide-enter-left {
+      animation: slideInLeft 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Selection corner styles */
+    .border-l-3 {
+      border-left-width: 3px;
+    }
+    
+    .border-t-3 {
+      border-top-width: 3px;
+    }
+    
+    .border-r-3 {
+      border-right-width: 3px;
+    }
+    
+    .border-b-3 {
+      border-bottom-width: 3px;
+    }
+
+    /* Safe area for mobile */
+    .pb-safe {
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideInRight {
+      0% {
+        transform: translateX(100%);
+      }
+
+      100% {
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slideInLeft {
+      0% {
+        transform: translateX(-100%);
+      }
+
+      100% {
+        transform: translateX(0);
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="/index.css">
+  <script type="module" crossorigin src="/assets/index-DnyYHqnC.js"></script>
+</head>
+
+<body class="antialiased h-full overflow-hidden w-full fixed">
+  <div id="root"></div>
+
+  <!-- MOBILE ERROR LOGGER -->
+  <script>
+    window.onerror = function (message, source, lineno, colno, error) {
+      if (typeof message === 'string' && message.includes('ResizeObserver')) return;
+
+      const errorBox = document.createElement('div');
+      errorBox.style.position = 'fixed';
+      errorBox.style.top = '0';
+      errorBox.style.left = '0';
+      errorBox.style.width = '100%';
+      errorBox.style.background = 'rgba(220, 38, 38, 0.95)';
+      errorBox.style.color = 'white';
+      errorBox.style.zIndex = '99999';
+      errorBox.style.padding = '15px';
+      errorBox.style.fontSize = '12px';
+      errorBox.style.fontFamily = 'monospace';
+      errorBox.style.wordBreak = 'break-all';
+      errorBox.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
+      errorBox.innerText = 'ERROR: ' + message;
+
+      // Add Close
+      const close = document.createElement('button');
+      close.innerText = '✕';
+      close.style.float = 'right';
+      close.style.background = 'transparent';
+      close.style.border = 'none';
+      close.style.color = 'white';
+      close.style.fontSize = '16px';
+      close.style.fontWeight = 'bold';
+      close.onclick = function () { document.body.removeChild(errorBox); };
+      errorBox.insertBefore(close, errorBox.firstChild);
+
+      document.body.appendChild(errorBox);
+    };
+
+    window.onunhandledrejection = function (event) {
+      const reason = event.reason ? (event.reason.message || event.reason) : 'Unknown Promise Error';
+      // Filter common benign resize errors
+      if (reason.toString().includes('ResizeObserver')) return;
+
+      const errorBox = document.createElement('div');
+      errorBox.style.position = 'fixed';
+      errorBox.style.bottom = '0';
+      errorBox.style.left = '0';
+      errorBox.style.width = '100%';
+      errorBox.style.background = 'rgba(234, 88, 12, 0.95)';
+      errorBox.style.color = 'white';
+      errorBox.style.zIndex = '99999';
+      errorBox.style.padding = '15px';
+      errorBox.style.fontSize = '12px';
+      errorBox.style.fontFamily = 'monospace';
+      errorBox.style.wordBreak = 'break-all';
+      errorBox.style.boxShadow = '0 -4px 12px rgba(0,0,0,0.2)';
+      errorBox.innerText = 'PROMISE: ' + reason;
+
+      errorBox.onclick = function () { document.body.removeChild(errorBox); };
+
+      document.body.appendChild(errorBox);
+    };
+  </script>
+
+</body>
+
+</html>
+

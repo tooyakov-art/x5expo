@@ -27,7 +27,10 @@
       "ios": {
         "appleId": "tooyakov.art@gmail.com",
         "ascAppId": "6757862233",
-        "appleTeamId": "F8LA8PC4U6"
+        "appleTeamId": "F8LA8PC4U6",
+        "ascApiKeyPath": "D:\\Загрузки\\AuthKey_P22AW4RV64.p8",
+        "ascApiKeyId": "P22AW4RV64",
+        "ascApiKeyIssuerId": "52bb4076-e8cd-4728-9b66-8b858fa80d60"
       },
       "android": {
         "serviceAccountKeyPath": "./google-services.json",

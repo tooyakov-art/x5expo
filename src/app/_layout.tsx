@@ -3,7 +3,6 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Notifications from 'expo-notifications';
-import * as Device from 'expo-device';
 import { Platform } from 'react-native';
 import Purchases from 'react-native-purchases';
 import type { Session } from '@supabase/supabase-js';
@@ -39,6 +38,10 @@ export default function RootLayout() {
     supabase.auth.getSession().then(({ data: { session: s } }) => {
       setSession(s);
       setLoading(false);
+    }).catch((error) => {
+      console.error('[Auth] Failed to restore session:', error);
+      setSession(null);
+      setLoading(false);
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, s) => {
@@ -49,22 +52,21 @@ export default function RootLayout() {
     return () => subscription.unsubscribe();
   }, []);
 
-  // Push notifications
-  useEffect(() => {
-    if (!Device.isDevice) return;
-    Notifications.getPermissionsAsync().then(({ status }) => {
-      if (status !== 'granted') {
-        Notifications.requestPermissionsAsync();
-      }
-    });
-  }, []);
+  // Push notification permissions are requested in index.tsx when webReady,
+  // so we don't duplicate the prompt here.
 
   // RevenueCat
   useEffect(() => {
     const key = Platform.OS === 'ios' ? REVENUECAT_IOS_KEY : REVENUECAT_ANDROID_KEY;
-    if (key) {
+    if (!key) {
+      console.warn('[RevenueCat] API key not configured for', Platform.OS, '— payments unavailable');
+      return;
+    }
+    try {
       Purchases.configure({ apiKey: key });
       setPurchasesConfigured(true);
+    } catch (error) {
+      console.error('[RevenueCat] Failed to configure:', error);
     }
   }, []);
 
@@ -76,7 +78,10 @@ export default function RootLayout() {
         if (session?.user?.id) {
           await Purchases.logIn(session.user.id);
         } else {
-          await Purchases.logOut();
+          const info = await Purchases.getCustomerInfo();
+          if (!info.originalAppUserId.startsWith('$RCAnonymousID')) {
+            await Purchases.logOut();
+          }
         }
       } catch (e) {
         console.warn('[RevenueCat] Identity sync failed:', e);
