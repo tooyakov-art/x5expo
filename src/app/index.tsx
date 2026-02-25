@@ -8,6 +8,7 @@ import {
   StatusBar,
   Linking,
   Text,
+  Image,
   AppState,
 } from 'react-native';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
@@ -878,12 +879,13 @@ export default function MainScreen() {
 
       {loading && (
         <View style={styles.splashOverlay}>
-          <View style={styles.logoBox}>
-            <Text style={styles.logoText}>X5</Text>
-          </View>
+          <Image
+            source={require('../../assets/icon.png')}
+            style={styles.splashIcon}
+            resizeMode="contain"
+          />
           <Text style={styles.splashTitle}>X5 Marketing</Text>
-          <Text style={styles.splashSubtitle}>Loading...</Text>
-          <ActivityIndicator size="small" color="#A855F7" style={styles.splashSpinner} />
+          <ActivityIndicator size="small" color="#3B82F6" style={styles.splashSpinner} />
         </View>
       )}
     </View>
@@ -902,39 +904,23 @@ const styles = StyleSheet.create({
   },
   splashOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: '#0A0A0F',
+    backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 30,
   },
-  logoBox: {
-    width: 92,
-    height: 92,
-    borderRadius: 26,
-    backgroundColor: '#111827',
-    borderWidth: 1,
-    borderColor: '#1F2937',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 16,
-  },
-  logoText: {
-    color: '#FFFFFF',
-    fontSize: 36,
-    fontWeight: '900',
-    letterSpacing: 1,
+  splashIcon: {
+    width: 160,
+    height: 160,
+    marginBottom: 12,
   },
   splashTitle: {
-    color: '#FFFFFF',
-    fontSize: 22,
-    fontWeight: '800',
-  },
-  splashSubtitle: {
-    color: '#9CA3AF',
-    fontSize: 13,
-    marginTop: 6,
+    color: '#1A1A1A',
+    fontSize: 18,
+    fontWeight: '600',
+    marginTop: 4,
   },
   splashSpinner: {
-    marginTop: 14,
+    marginTop: 20,
   },
 });
