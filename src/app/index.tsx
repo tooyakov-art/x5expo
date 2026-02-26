@@ -4,11 +4,12 @@ import {
   StyleSheet,
   Platform,
   BackHandler,
-  ActivityIndicator,
   StatusBar,
   Linking,
   Text,
   Image,
+  Animated,
+  Easing,
   AppState,
 } from 'react-native';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
@@ -170,6 +171,132 @@ const ensureProfile = async (session: Session) => {
   );
   if (error) console.error('[Profile] Failed to ensure profile:', error.message);
 };
+
+function AnimatedSplash() {
+  const logoScale = useRef(new Animated.Value(0.3)).current;
+  const logoOpacity = useRef(new Animated.Value(0)).current;
+  const titleOpacity = useRef(new Animated.Value(0)).current;
+  const titleTranslateY = useRef(new Animated.Value(20)).current;
+  const ringScale = useRef(new Animated.Value(0.8)).current;
+  const ringOpacity = useRef(new Animated.Value(0)).current;
+  const dot1 = useRef(new Animated.Value(0)).current;
+  const dot2 = useRef(new Animated.Value(0)).current;
+  const dot3 = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    // Logo: fade in + spring scale
+    Animated.parallel([
+      Animated.timing(logoOpacity, {
+        toValue: 1,
+        duration: 600,
+        useNativeDriver: true,
+      }),
+      Animated.spring(logoScale, {
+        toValue: 1,
+        tension: 50,
+        friction: 7,
+        useNativeDriver: true,
+      }),
+    ]).start();
+
+    // Pulsing ring around logo
+    Animated.sequence([
+      Animated.delay(400),
+      Animated.parallel([
+        Animated.timing(ringOpacity, { toValue: 0.3, duration: 500, useNativeDriver: true }),
+        Animated.timing(ringScale, { toValue: 1, duration: 500, useNativeDriver: true }),
+      ]),
+    ]).start(() => {
+      // Continuous pulse
+      Animated.loop(
+        Animated.sequence([
+          Animated.parallel([
+            Animated.timing(ringScale, { toValue: 1.15, duration: 1200, easing: Easing.inOut(Easing.ease), useNativeDriver: true }),
+            Animated.timing(ringOpacity, { toValue: 0.1, duration: 1200, useNativeDriver: true }),
+          ]),
+          Animated.parallel([
+            Animated.timing(ringScale, { toValue: 1, duration: 1200, easing: Easing.inOut(Easing.ease), useNativeDriver: true }),
+            Animated.timing(ringOpacity, { toValue: 0.3, duration: 1200, useNativeDriver: true }),
+          ]),
+        ]),
+      ).start();
+    });
+
+    // Title: slide up + fade in
+    Animated.sequence([
+      Animated.delay(500),
+      Animated.parallel([
+        Animated.timing(titleOpacity, { toValue: 1, duration: 500, useNativeDriver: true }),
+        Animated.timing(titleTranslateY, { toValue: 0, duration: 500, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
+      ]),
+    ]).start();
+
+    // Loading dots: staggered bounce
+    const animateDot = (dot: Animated.Value, delay: number) =>
+      Animated.loop(
+        Animated.sequence([
+          Animated.delay(delay),
+          Animated.timing(dot, { toValue: -8, duration: 300, easing: Easing.out(Easing.quad), useNativeDriver: true }),
+          Animated.timing(dot, { toValue: 0, duration: 300, easing: Easing.in(Easing.quad), useNativeDriver: true }),
+          Animated.delay(600 - delay),
+        ]),
+      );
+    Animated.sequence([
+      Animated.delay(800),
+      Animated.parallel([
+        animateDot(dot1, 0),
+        animateDot(dot2, 150),
+        animateDot(dot3, 300),
+      ]),
+    ]).start();
+  }, [logoScale, logoOpacity, titleOpacity, titleTranslateY, ringScale, ringOpacity, dot1, dot2, dot3]);
+
+  return (
+    <View style={styles.splashOverlay}>
+      {/* Pulsing ring */}
+      <Animated.View
+        style={[
+          styles.splashRing,
+          { transform: [{ scale: ringScale }], opacity: ringOpacity },
+        ]}
+      />
+
+      {/* Logo with spring animation */}
+      <Animated.View
+        style={{
+          transform: [{ scale: logoScale }],
+          opacity: logoOpacity,
+        }}
+      >
+        <Image
+          source={require('../../assets/icon.png')}
+          style={styles.splashIcon}
+          resizeMode="contain"
+        />
+      </Animated.View>
+
+      {/* Title slides up */}
+      <Animated.Text
+        style={[
+          styles.splashTitle,
+          { opacity: titleOpacity, transform: [{ translateY: titleTranslateY }] },
+        ]}
+      >
+        X5 Marketing
+      </Animated.Text>
+
+      {/* Bouncing dots */}
+      <View style={styles.dotsRow}>
+        {[dot1, dot2, dot3].map((dot, i) => (
+          <Animated.View
+            key={i}
+            style={[styles.dot, { transform: [{ translateY: dot }] }]}
+          />
+        ))}
+      </View>
+    </View>
+  );
+}
 
 export default function MainScreen() {
   const webViewRef = useRef<WebView>(null);
@@ -877,17 +1004,7 @@ export default function MainScreen() {
         webviewDebuggingEnabled={__DEV__}
       />
 
-      {loading && (
-        <View style={styles.splashOverlay}>
-          <Image
-            source={require('../../assets/icon.png')}
-            style={styles.splashIcon}
-            resizeMode="contain"
-          />
-          <Text style={styles.splashTitle}>X5 Marketing</Text>
-          <ActivityIndicator size="small" color="#3B82F6" style={styles.splashSpinner} />
-        </View>
-      )}
+      {loading && <AnimatedSplash />}
     </View>
   );
 }
@@ -909,18 +1026,34 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     zIndex: 30,
   },
+  splashRing: {
+    position: 'absolute',
+    width: 200,
+    height: 200,
+    borderRadius: 100,
+    borderWidth: 2,
+    borderColor: '#3B82F6',
+  },
   splashIcon: {
-    width: 160,
-    height: 160,
-    marginBottom: 12,
+    width: 150,
+    height: 150,
   },
   splashTitle: {
     color: '#1A1A1A',
-    fontSize: 18,
-    fontWeight: '600',
-    marginTop: 4,
+    fontSize: 20,
+    fontWeight: '700',
+    marginTop: 16,
+    letterSpacing: 0.5,
   },
-  splashSpinner: {
-    marginTop: 20,
+  dotsRow: {
+    flexDirection: 'row',
+    marginTop: 28,
+    gap: 8,
+  },
+  dot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: '#3B82F6',
   },
 });
