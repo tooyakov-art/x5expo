@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tab 5 — Pixel Office Game Hub Prototype</title>
+  <style>
+    :root{
+      --bg:#1E1F2B;--tile:#2D3142;--tile2:#25283a;--primary:#6D7AE0;--ok:#39D98A;--warn:#F7C948;--bad:#FF6B6B;--text:#EAEAEA;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:"Press Start 2P",Consolas,monospace}
+    .app{max-width:1200px;margin:0 auto;padding:12px}
+    .topbar{display:flex;justify-content:space-between;align-items:center;background:var(--tile);border:2px solid #000;padding:10px 12px;margin-bottom:10px}
+    .map-wrap{position:relative;background:repeating-linear-gradient(0deg,var(--tile) 0 32px,var(--tile2) 32px 64px),repeating-linear-gradient(90deg,#00000010 0 32px,#00000020 32px 64px);height:620px;border:3px solid #000;overflow:hidden}
+    .zone{position:absolute;border:2px solid #000;background:#ffffff10;padding:8px;cursor:pointer;transition:transform .2s, box-shadow .2s, outline .2s}
+    .zone:hover{transform:scale(1.02);box-shadow:0 0 0 3px #ffffff22 inset,0 0 14px #0008}
+    .zone.active{outline:3px solid var(--primary);box-shadow:0 0 0 3px #000 inset}
+    .zone .name{font-size:11px;margin-bottom:6px}
+    .zone .cta{font-size:10px;opacity:.9}
+    .npc{position:absolute;width:14px;height:14px;background:var(--ok);border:2px solid #000;animation:bob 1.2s infinite alternate}
+    @keyframes bob{from{transform:translateY(0)}to{transform:translateY(-2px)}}
+    .path{position:absolute;height:6px;background:var(--primary);opacity:.5;animation:blink .8s infinite}
+    @keyframes blink{50%{opacity:.95}}
+    .hud{display:grid;grid-template-columns:2fr 1fr;gap:10px;margin-top:10px}
+    .panel{background:var(--tile);border:2px solid #000;padding:10px;min-height:170px}
+    .btn{margin-top:10px;background:var(--primary);color:#fff;border:2px solid #000;padding:8px 10px;cursor:pointer;font:inherit;font-size:10px}
+    .btn.warn{background:var(--warn);color:#000}
+    .legend{font-size:10px;line-height:1.7;opacity:.9}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="topbar">
+      <div>Lv.4 • 340/400 XP • Streak 3</div>
+      <div>Tab 5: GAME HUB</div>
+    </div>
+
+    <div class="map-wrap" id="map">
+      <div class="path" style="left:210px;top:450px;width:160px"></div>
+      <div class="path" style="left:120px;top:320px;width:180px"></div>
+      <div class="path" style="left:420px;top:190px;width:230px"></div>
+      <div class="path" style="left:760px;top:320px;width:130px"></div>
+
+      <div class="zone" data-zone="projects" style="left:420px;top:40px;width:360px;height:120px">
+        <div class="name">ПРОЕКТЫ</div><div class="cta">CTA: Продолжить проект</div>
+      </div>
+      <div class="zone" data-zone="tasks" style="left:70px;top:240px;width:260px;height:170px">
+        <div class="name">ЗАДАЧИ</div><div class="cta">CTA: Взять квест</div>
+      </div>
+      <div class="zone" data-zone="team_hall" style="left:430px;top:240px;width:300px;height:180px">
+        <div class="name">КОМАНДНЫЙ ЗАЛ</div><div class="cta">CTA: Открыть штаб</div>
+      </div>
+      <div class="zone" data-zone="income" style="left:820px;top:240px;width:240px;height:170px">
+        <div class="name">ДОХОД</div><div class="cta">CTA: Забрать награду</div>
+      </div>
+      <div class="zone" data-zone="profile" style="left:420px;top:470px;width:340px;height:110px">
+        <div class="name">ПРОФИЛЬ</div><div class="cta">CTA: Прокачать</div>
+      </div>
+
+      <div class="npc" style="left:510px;top:300px"></div>
+      <div class="npc" style="left:555px;top:340px"></div>
+      <div class="npc" style="left:610px;top:300px"></div>
+    </div>
+
+    <div class="hud">
+      <div class="panel" id="detail">
+        <div style="font-size:11px;margin-bottom:8px">Выбери зону на карте</div>
+        <div class="legend">Hover: подсветка/tooltip. Click: открытие панели зоны + переход активного состояния.</div>
+      </div>
+      <div class="panel">
+        <div style="font-size:11px;margin-bottom:8px">Быстрые переходы</div>
+        <button class="btn" onclick="jump('tasks')">К Задачам</button>
+        <button class="btn" onclick="jump('projects')">К Проектам</button>
+        <button class="btn warn" onclick="jump('income')">Claim Reward</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+const zoneData = {
+  team_hall:{title:'Командный зал',state:'progress',hover:'tile glow + npc pulse',click:'popover целей дня',cta:'Взять миссию'},
+  tasks:{title:'Задачи',state:'progress',hover:'outline + XP tooltip',click:'quest panel',cta:'Начать / Сдать квест'},
+  projects:{title:'Проекты',state:'progress',hover:'checkpoint blink',click:'project branch panel',cta:'Коммит шага'},
+  income:{title:'Доход',state:'reward',hover:'safe shimmer',click:'income modal',cta:'Забрать награду'},
+  profile:{title:'Профиль',state:'empty|progress',hover:'gear highlight',click:'profile/perks panel',cta:'Улучшить за XP'}
+};
+const detail = document.getElementById('detail');
+const zones=[...document.querySelectorAll('.zone')];
+function render(key){
+  const z = zoneData[key];
+  detail.innerHTML = `<div style="font-size:11px;margin-bottom:8px">${z.title}</div>
+  <div class="legend">State: ${z.state}<br>Hover: ${z.hover}<br>Click: ${z.click}</div>
+  <button class="btn" onclick="alert('${z.cta}')">${z.cta}</button>`;
+  zones.forEach(el=>el.classList.toggle('active',el.dataset.zone===key));
+}
+zones.forEach(el=>{
+  el.addEventListener('click',()=>render(el.dataset.zone));
+});
+function jump(k){ render(k); document.querySelector(`[data-zone="${k}"]`).scrollIntoView({behavior:'smooth',block:'center',inline:'center'}); }
+</script>
+</body>
+</html>
