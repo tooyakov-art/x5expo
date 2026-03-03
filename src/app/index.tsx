@@ -388,26 +388,31 @@ export default function MainScreen() {
     if (!googleAuthPending) return;
 
     let interval: ReturnType<typeof setInterval> | undefined;
+    let timeout: ReturnType<typeof setTimeout> | undefined;
+    let mounted = true;
+
+    const clearTimers = () => {
+      if (interval) { clearInterval(interval); interval = undefined; }
+      if (timeout) { clearTimeout(timeout); timeout = undefined; }
+    };
 
     const attempt = () => {
-      if (!googleRequestReady) return; // still loading, wait for next interval
+      if (!googleRequestReady) return;
       if (googlePromptInFlightRef.current) return;
-      if (interval) clearInterval(interval);
-      interval = undefined;
+      clearTimers();
+      if (!mounted) return;
       setGoogleAuthPending(false);
       googleAuthPendingRef.current = false;
       googlePromptInFlightRef.current = true;
       googlePromptAsync().catch((error: unknown) => {
+        if (!mounted) return;
         const msg = (error as Error)?.message || '';
         if (isGoogleRequestStillLoadingError(error)) {
-          // Still not ready — re-arm pending.
           setGoogleAuthPending(true);
           googleAuthPendingRef.current = true;
           return;
         }
-        if (isGooglePromptInProgressError(error)) {
-          return;
-        }
+        if (isGooglePromptInProgressError(error)) return;
         dispatchAuthResult({
           success: false,
           error: msg || 'Google sign-in failed',
@@ -418,12 +423,12 @@ export default function MainScreen() {
       });
     };
 
-    // Create interval first, then try immediately.
     interval = setInterval(attempt, 300);
     attempt();
 
-    const timeout = setTimeout(() => {
-      if (interval) clearInterval(interval);
+    timeout = setTimeout(() => {
+      clearTimers();
+      if (!mounted) return;
       if (googleAuthPendingRef.current) {
         setGoogleAuthPending(false);
         googleAuthPendingRef.current = false;
@@ -436,22 +441,32 @@ export default function MainScreen() {
     }, 15000);
 
     return () => {
-      if (interval) clearInterval(interval);
-      clearTimeout(timeout);
+      mounted = false;
+      clearTimers();
     };
   }, [googleAuthPending, googleRequestReady, googlePromptAsync, dispatchAuthResult]);
 
-  const dispatchAuthBootstrap = useCallback((nextSession: Session) => {
+  const dispatchAuthBootstrap = useCallback(async (nextSession: Session) => {
     const user = nextSession.user;
+
+    // Load real profile data from Supabase
+    let profile: { plan?: string; credits?: number; purchased_course_ids?: string[] } = {};
+    try {
+      const { data } = await supabase.from('profiles').select('plan, credits, purchased_course_ids').eq('id', user.id).single();
+      if (data) profile = data;
+    } catch (e) {
+      console.error('[Bootstrap] Failed to load profile:', e);
+    }
+
     const bootstrapUser = {
       id: user.id,
       name: user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0] || 'User',
       email: user.email || undefined,
       avatar: user.user_metadata?.avatar_url || undefined,
       isGuest: false,
-      plan: 'free',
-      credits: 0,
-      purchasedCourseIds: [],
+      plan: profile.plan || 'free',
+      credits: profile.credits ?? 0,
+      purchasedCourseIds: profile.purchased_course_ids || [],
     };
 
     const json = JSON.stringify(bootstrapUser);
@@ -459,7 +474,7 @@ export default function MainScreen() {
       (function() {
         try {
           localStorage.setItem('x5_user', JSON.stringify(${json}));
-          localStorage.setItem('x5_credits', '0');
+          localStorage.setItem('x5_credits', ${JSON.stringify(String(bootstrapUser.credits))});
         } catch (e) {
           console.error('[X5 Native] Failed to persist auth to localStorage:', e);
         }

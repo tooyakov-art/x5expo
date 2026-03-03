@@ -21,9 +21,9 @@
         "usesNonExemptEncryption": false
       },
       "infoPlist": {
-        "NSCameraUsageDescription": "X5 Marketing needs camera access for photo features",
-        "NSPhotoLibraryUsageDescription": "X5 Marketing needs photo library access to upload images",
-        "NSMicrophoneUsageDescription": "X5 Marketing needs microphone access for audio recording"
+        "NSCameraUsageDescription": "X5 Marketing uses your camera to take photos for creating AI-enhanced marketing materials, including advertisements, product photos, and social media content.",
+        "NSPhotoLibraryUsageDescription": "X5 Marketing accesses your photo library to select images for creating AI-enhanced marketing materials, such as advertisements, logos, and social media posts.",
+        "NSMicrophoneUsageDescription": "X5 Marketing uses your microphone to record audio for creating video marketing content."
       },
       "runtimeVersion": {
         "policy": "appVersion"
