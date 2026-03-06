@@ -276,14 +276,12 @@ function AnimatedSplash() {
       </Animated.View>
 
       {/* Title slides up */}
-      <Animated.Text
-        style={[
-          styles.splashTitle,
-          { opacity: titleOpacity, transform: [{ translateY: titleTranslateY }] },
-        ]}
-      >
-        X5 Marketing
-      </Animated.Text>
+      <Animated.View style={{ alignItems: 'center', opacity: titleOpacity, transform: [{ translateY: titleTranslateY }] }}>
+        <Text style={styles.splashTitle}>X5 Marketing</Text>
+        <Text style={{ color: 'rgba(255,255,255,0.55)', fontSize: 12, fontWeight: '600', letterSpacing: 2, textTransform: 'uppercase', marginTop: 4 }}>
+          Business OS
+        </Text>
+      </Animated.View>
 
       {/* Bouncing dots */}
       <View style={styles.dotsRow}>
@@ -1036,39 +1034,40 @@ const styles = StyleSheet.create({
   },
   splashOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FF5500',
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 30,
   },
   splashRing: {
     position: 'absolute',
-    width: 200,
-    height: 200,
-    borderRadius: 100,
-    borderWidth: 2,
-    borderColor: '#3B82F6',
+    width: 220,
+    height: 220,
+    borderRadius: 110,
+    borderWidth: 1.5,
+    borderColor: 'rgba(255,255,255,0.35)',
   },
   splashIcon: {
-    width: 150,
-    height: 150,
+    width: 110,
+    height: 110,
+    borderRadius: 28,
   },
   splashTitle: {
-    color: '#1A1A1A',
-    fontSize: 20,
-    fontWeight: '700',
-    marginTop: 16,
-    letterSpacing: 0.5,
+    color: '#FFFFFF',
+    fontSize: 24,
+    fontWeight: '800',
+    marginTop: 20,
+    letterSpacing: -0.5,
   },
   dotsRow: {
     flexDirection: 'row',
-    marginTop: 28,
-    gap: 8,
+    marginTop: 32,
+    gap: 6,
   },
   dot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: '#3B82F6',
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: 'rgba(255,255,255,0.7)',
   },
 });
